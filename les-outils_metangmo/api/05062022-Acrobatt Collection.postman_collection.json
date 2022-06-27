@@ -1,0 +1,5137 @@
+{
+	"info": {
+		"_postman_id": "0e0e8f5c-4a8f-4a81-8620-afb5d8b0fbd8",
+		"name": "Acrobatt Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Traveler",
+			"item": [
+				{
+					"name": "signup",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"let password = JSON.parse(pm.request.body.raw).password;",
+									"",
+									"pm.collectionVariables.set(\"id_traveler\", jsonData.id);",
+									"pm.collectionVariables.set(\"firstname\", jsonData.firstname);",
+									"pm.collectionVariables.set(\"lastname\", jsonData.lastname);",
+									"pm.collectionVariables.set(\"email\", jsonData.email);",
+									"pm.collectionVariables.set(\"password\", password);",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"",
+									"postman.setNextRequest(\"signin\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									" pm.environment.set(\"resetValue\", pm.collectionVariables.toJSON().values)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstname\": \"{{firstname}}\",\n    \"lastname\": \"{{lastname}}\",\n    \"email\": \"{{email}}\",\n    \"password\": \"{{password}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/traveler/signup",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"traveler",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "signin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.collectionVariables.set(\"bearer_token\", jsonData.token);\r",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);\r",
+									"\r",
+									"postman.setNextRequest(\"whoami\");\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"{{email}}\",\n    \"password\": \"{{password}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/traveler/signin",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"traveler",
+								"signin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "new_signin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.collectionVariables.set(\"bearer_token\", jsonData.token);\r",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);\r",
+									"\r",
+									"postman.setNextRequest(\"whoami\");\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"{{email}}\",\n    \"password\": \"{{new_password}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/traveler/signin",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"traveler",
+								"signin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "whoami",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);\r",
+									"\r",
+									"postman.setNextRequest(\"get_travelers\");\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/traveler/whoami",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"traveler",
+								"whoami"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_travelers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"get_traveler_by_id\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/traveler",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"traveler"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_traveler_by_id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"update_traveler\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/traveler/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"traveler",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{id_traveler}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_traveler",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"update_traveler_password\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstname\": \"{{updated_firstname}}\",\n    \"lastname\": \"{{lastname}}\",\n    \"email\": \"{{email}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/traveler/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"traveler",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{id_traveler}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_traveler_password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"get_traveltags\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"password\": \"{{new_password}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/traveler/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"traveler",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{id_traveler}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_traveler",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(null);",
+									"",
+									"// Reset Collection Variable values on last request",
+									"pm.environment.get(\"resetValue\").forEach((a)=>pm.collectionVariables.set(a.key,a.value))",
+									"console.log(\"******* COLLECTION VARIABLES RESET *******\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/traveler/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"traveler",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{id_traveler}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "invitations",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/traveler/:id/invitations",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"traveler",
+								":id",
+								"invitations"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "invitations",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"idTravel\":{{id_travel}},\n    \"hasRefused\":false,\n    \"idParticipant\":{{id_participant}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/traveler/:id/invitations",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"traveler",
+								":id",
+								"invitations"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TravelTag",
+			"item": [
+				{
+					"name": "get_traveltags",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"",
+									"postman.setNextRequest(\"get_traveltag_by_id\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/traveltag",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"traveltag"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_traveltag_by_id",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"id\", 1);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"create_travel\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/traveltag/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"traveltag",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{id_traveltag}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Travel",
+			"item": [
+				{
+					"name": "create_travel",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.collectionVariables.set(\"id_travel\", jsonData.travel.id);",
+									"pm.collectionVariables.set(\"id\", jsonData.travel.id);",
+									"pm.collectionVariables.set(\"id_itinerary\", jsonData.itinerary.id);",
+									"pm.collectionVariables.set(\"id_element_itinerary\", jsonData.itinerary.element_itinerary.id);",
+									"pm.collectionVariables.set(\"id_task_list\", jsonData.tasklist.id);",
+									"pm.collectionVariables.set(\"id_departure_step\", \"\");",
+									"pm.collectionVariables.set(\"id_arrival_step\", \"\");",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"get_public_travels\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"commentary\": \"{{commentary}}\",\n  \"is_public\": {{is_public}},\n  \"id_traveltag\": {{id_traveltag}},\n  \"name\": \"{{travel_name}}\",\n  \"predicted_date\": \"2022-05-27T09:06:57.868Z\",\n  \"start_date\": null,\n  \"end_date\": null\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/travel",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_public_travels",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"get_user_travels\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/publictravels",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"publictravels"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_user_travels",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"get_travel_by_id\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/mytravels",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"mytravels"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_travel_by_id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"update_travel\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/travel/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{id_travel}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_travel",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"create_diary\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"commentary\": \"{{commentary}}\",\n  \"is_public\": {{is_public}},\n  \"predicted_date\": \"2022-05-27T09:06:57.868Z\",\n  \"start_date\": \"2022-05-27T09:06:57.868Z\",\n  \"end_date\": \"2022-06-27T09:06:57.868Z\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/travel/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{id_travel}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_travel",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"delete_traveler\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/travel/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{id_travel}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "clone_travel",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"is_public\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/clone",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"clone"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAdmin",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/admin",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"admin"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "19"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Diary",
+			"item": [
+				{
+					"name": "create_diary",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.collectionVariables.set(\"id_diary\", jsonData.id);",
+									"",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"get_diary\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"content\" : \"{{content}}\",\n    \"is_in_album\": {{is_in_album}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/diary",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"diary"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_diary",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"get_diary_by_id\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/diary",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"diary"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_diary_by_id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"update_diary\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/diary/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"diary",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								},
+								{
+									"key": "id",
+									"value": "{{id_diary}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_diary",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"create_tasklisttag\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":{{id_diary}},\r\n    \"content\" : \"{{content}}\",\r\n    \"is_in_album\": {{is_in_album}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/diary/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"diary",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								},
+								{
+									"key": "id",
+									"value": "{{id_diary}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_diary",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"delete_travel\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/diary/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"diary",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								},
+								{
+									"key": "id",
+									"value": "{{id_diary}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TaskListTag",
+			"item": [
+				{
+					"name": "create_tasklisttag",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.collectionVariables.set(\"id_tasklisttag\", jsonData.id);",
+									"pm.collectionVariables.set(\"id_tag\", jsonData.id);",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"get_tasklisttags\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"{{tagName}}\",\r\n    \"id_task_list\":{{id_task_list}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/tasklisttag",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"tasklisttag"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_tasklisttags",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"get_tasklisttag_by_id\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/tasklisttag",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"tasklisttag"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_tasklisttag_by_id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"update_tasklisttag\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/tasklisttag/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"tasklisttag",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								},
+								{
+									"key": "id",
+									"value": "{{id_tasklisttag}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_tasklisttag",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"create_task\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":{{id_tasklisttag}},\r\n    \"name\" : \"{{tagName}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/tasklisttag/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"tasklisttag",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								},
+								{
+									"key": "id",
+									"value": "{{id_tasklisttag}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_tasklisttag",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"delete_diary\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/tasklisttag/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"tasklisttag",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								},
+								{
+									"key": "id",
+									"value": "{{id_tasklisttag}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Task",
+			"item": [
+				{
+					"name": "create_task",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.collectionVariables.set(\"id_task\", jsonData.id);",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"get_tasks\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"{{name}}\",\r\n    \"execution_date\" : \"{{dateonly}}\",\r\n    \"id_element\":{{id_element_itinerary}},\r\n    \"task_list_tag_id\": {{id_tasklisttag}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/task",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"task"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_tasks",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"get_task_by_id\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/task/",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"task",
+								""
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_task_by_id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"associate_tag_to_task\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/task/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"task",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								},
+								{
+									"key": "id",
+									"value": "{{id_task}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "associate_tag_to_task",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"associate_tags_to_task\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/task/:id/tag/:idTag",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"task",
+								":id",
+								"tag",
+								":idTag"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								},
+								{
+									"key": "id",
+									"value": "{{id_task}}"
+								},
+								{
+									"key": "idTag",
+									"value": "{{id_tag}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "associate_tags_to_task",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"remove_tag_from_task\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n        \"tagId\": {{id_tag}}\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/task/:id/addtags",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"task",
+								":id",
+								"addtags"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								},
+								{
+									"key": "id",
+									"value": "{{id_task}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "remove_tag_from_task",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"update_task\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/task/:id/removetag/:idTag",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"task",
+								":id",
+								"removetag",
+								":idTag"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								},
+								{
+									"key": "id",
+									"value": "{{id_task}}"
+								},
+								{
+									"key": "idTag",
+									"value": "{{id_tag}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_task",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"create_travelreview\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"{{name}}\",\r\n    \"execution_date\" : \"{{dateonly}}\",\r\n    \"is_terminated\":{{is_terminated}},\r\n    \"tag_id\": {{id_tasklisttag}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/task/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"task",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								},
+								{
+									"key": "id",
+									"value": "{{id_task}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_task",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"delete_tasklisttag\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/task/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"task",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								},
+								{
+									"key": "id",
+									"value": "{{id_task}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TravelReview",
+			"item": [
+				{
+					"name": "create_travelreview",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.collectionVariables.set(\"id_travelreview\", jsonData.id);",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"get_travelreview\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"review\": {{review}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/travelreview",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"travelreview"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_travelreview",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"get_travelreview_by_id\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/travelreview",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"travelreview"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_travelreview_by_id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"update_travelreview\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/travelreview/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"travelreview",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								},
+								{
+									"key": "id",
+									"value": "{{id_travelreview}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_travelreview",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"create_position\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\":{{id_step}},\n  \"point\": {\n    \"type\": \"{{type}}\",\n    \"coordinates\": [\n      {{lng}},\n      {{lat}}\n    ]\n  },\n  \"order\": {{order}},\n  \"duration\":{{duration}},\n  \"element_step\":{\n      \"id\":{{id_element}},\n      \"name\":\"{{name}}\",\n      \"description\":\"{{description}}\",\n      \"predicted_date\":\"{{dateonly}}\"\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/travel/:idTravel/travelreview/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"travel",
+								":idTravel",
+								"travelreview",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								},
+								{
+									"key": "id",
+									"value": "{{id_travelreview}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_travelreview",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"delete_task\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/travelreview/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"travelreview",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								},
+								{
+									"key": "id",
+									"value": "{{id_travelreview}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Position",
+			"item": [
+				{
+					"name": "create_position",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.collectionVariables.set(\"id_position\", jsonData.id);",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"get_user_positions\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"point\": {\n    \"type\": \"{{type}}\",\n    \"coordinates\": [\n      {{lng}},\n      {{lat}}\n    ]\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/position",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"position"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_user_positions",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"get_user_position_by_id\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/position",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"position"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_user_position_by_id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"update_position\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/position/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"position",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								},
+								{
+									"key": "id",
+									"value": "{{id_position}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_position",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"create_step\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"point\": {\n        \"crs\": {\n            \"type\": \"name\",\n            \"properties\": {\n                \"name\": \"EPSG:4326\"\n            }\n        },\n        \"type\": \"Point\",\n        \"coordinates\": [\n            7.6,\n            47.2\n        ]\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/position/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"position",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								},
+								{
+									"key": "id",
+									"value": "{{id_position}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_position",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"delete_travelreview\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/position/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"position",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								},
+								{
+									"key": "id",
+									"value": "{{id_position}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Step",
+			"item": [
+				{
+					"name": "create_step",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"// pm.collectionVariables.set(\"count\", 1);",
+									"// pm.collectionVariables.set(\"order\", 1);",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"var currentCount = pm.collectionVariables.get(\"count\")",
+									"",
+									"console.log(currentCount);",
+									"",
+									"if (currentCount < 3) {",
+									"    // let newCount = currentCount +1;",
+									"    pm.collectionVariables.set(\"order\", currentCount);",
+									"    pm.collectionVariables.set(\"count\", currentCount + 1);",
+									"    pm.test(\"Status code is 201\", function () {",
+									"        pm.response.to.have.status(201);",
+									"    });",
+									"    console.log(currentCount);",
+									"",
+									"    postman.setNextRequest(\"create_step\");",
+									"} else {",
+									"    pm.test(\"Status code is 201\", function () {",
+									"        pm.response.to.have.status(201);",
+									"    });",
+									"    postman.setNextRequest(\"get_step\");",
+									"}",
+									"",
+									"var jsonData = pm.response.json();",
+									"console.log(jsonData.id)",
+									"console.log(jsonData.element.id)",
+									"",
+									"pm.collectionVariables.set(\"id_step\", jsonData.id);",
+									"",
+									"console.log(\"id_step = \" + pm.collectionVariables.get(\"id_step\"))",
+									"",
+									"pm.collectionVariables.set(\"id_element\", jsonData.element.id);",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"point\": {\n    \"type\": \"{{type}}\",\n    \"coordinates\": [\n      {{lng}},\n      {{lat}}\n    ]\n  },\n  \"order\": {{order}},\n  \"duration\":{{duration}},\n  \"element\":{\n      \"name\":\"{{name}}\",\n      \"description\":\"{{description}}\",\n      \"predicted_date\":\"{{dateonly}}\"\n  },\n  \"id_transportmode\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/step",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"step"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_step",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"get_step_by_id\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/step",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"step"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_step_by_id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"update_step\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/step/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"step",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								},
+								{
+									"key": "id",
+									"value": "{{id_step}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_step",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"create_interestpoint\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\":{{id_step}},\n  \"point\": {\n    \"type\": \"{{type}}\",\n    \"coordinates\": [\n      {{lng}},\n      {{lat}}\n    ]\n  },\n  \"order\": {{order}},\n  \"duration\":{{duration}},\n  \"element\":{\n      \"id\":{{id_element}},\n      \"name\":\"{{name}}\",\n      \"description\":\"{{new_description}}\",\n      \"predicted_date\":\"{{dateonly}}\"\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/travel/:idTravel/step/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"travel",
+								":idTravel",
+								"step",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								},
+								{
+									"key": "id",
+									"value": "{{id_step}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_all_associated_interestpoints",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"get_trip\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/step/:id/interestpoint",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"step",
+								":id",
+								"interestpoint"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								},
+								{
+									"key": "id",
+									"value": "{{id_step}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_step",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"delete_position\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/step/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"step",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								},
+								{
+									"key": "id",
+									"value": "{{id_step}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reorder_steps",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n        \"id\": 1,\r\n        \"order\": 1\r\n    },\r\n    {\r\n        \"id\": 3,\r\n        \"order\": 2\r\n    },\r\n    {\r\n        \"id\": 2,\r\n        \"order\": 3\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/travel/:idTravel/steps/reorder",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"travel",
+								":idTravel",
+								"steps",
+								"reorder"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "InterestPoint",
+			"item": [
+				{
+					"name": "create_interestpoint",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.collectionVariables.set(\"id_interestpoint\", jsonData.id);",
+									"pm.collectionVariables.set(\"id_element\", jsonData.element.id);",
+									"",
+									"pm.collectionVariables.set(\"printResponse\") && console.log(jsonData);",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"get_interestpoint\");",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"point\": {\n    \"type\": \"{{type}}\",\n    \"coordinates\": [\n      {{lng}},\n      {{lat}}\n    ]\n  },\n  \"order\": {{order}},\n  \"duration\":{{duration}},\n  \"id_step\":{{id_step}},\n  \"element\":{\n      \"name\":\"{{name}}\",\n      \"description\":\"{{description}}\",\n      \"predicted_date\":\"{{dateonly}}\"\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/interestpoint/",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"interestpoint",
+								""
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_interestpoint",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"associate_interestpoint_to_step\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/interestpoint",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"interestpoint"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "associate_interestpoint_to_step",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"remove_interestpoint_from_step\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/interestpoint/:id/step/:idStep",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"interestpoint",
+								":id",
+								"step",
+								":idStep"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								},
+								{
+									"key": "id",
+									"value": "{{id_interestpoint}}"
+								},
+								{
+									"key": "idStep",
+									"value": "{{id_step}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "remove_interestpoint_from_step",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\");",
+									"",
+									"postman.setNextRequest(\"get_interestpoint_by_id\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/interestpoint/:id/removestep",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"interestpoint",
+								":id",
+								"removestep"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								},
+								{
+									"key": "id",
+									"value": "{{id_step}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_interestpoint_by_id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"update_interestpoint\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/interestpoint/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"interestpoint",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								},
+								{
+									"key": "id",
+									"value": "{{id_interestpoint}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_interestpoint",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"get_all_associated_interestpoints\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\":{{id_interestpoint}},  \r\n  \"point\": {\r\n    \"type\": \"{{type}}\",\r\n    \"coordinates\": [\r\n      {{lng}},\r\n      {{lat}}\r\n    ]\r\n  },\r\n  \"order\": {{order}},\r\n  \"duration\":{{duration}},\r\n  \"id_step\":{{id_step}},\r\n  \"element\":{\r\n      \"id\":{{id_element}},\r\n      \"name\":\"{{name}}\",\r\n      \"description\":\"{{description}}\",\r\n      \"predicted_date\":\"{{dateonly}}\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/interestpoint/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"interestpoint",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								},
+								{
+									"key": "id",
+									"value": "{{id_interestpoint}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_interestpoint",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"delete_step\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/interestpoint/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"interestpoint",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								},
+								{
+									"key": "id",
+									"value": "{{id_interestpoint}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Trip",
+			"item": [
+				{
+					"name": "get_trip",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"",
+									"postman.setNextRequest(\"get_trip_by_id\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/trip",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"trip"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_trip_by_id",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"id\", 1);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"update_trip\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/trip/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"trip",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								},
+								{
+									"key": "id",
+									"value": "{{id_trip}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_trip",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"get_transportmode\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\":{{id_trip}},\n    \"element\": {\n        \"id\":{{id_element}},\n        \"name\": \"{{name}}\",\n        \"description\": \"{{description}}\",\n        \"predicted_date\": \"{{dateonly}}\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/trip/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"trip",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								},
+								{
+									"key": "id",
+									"value": "{{id_trip}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_trip",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"delete_interestpoint\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/trip/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"trip",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								},
+								{
+									"key": "id",
+									"value": "{{id_trip}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TransportMode",
+			"item": [
+				{
+					"name": "get_transportmode",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"",
+									"postman.setNextRequest(\"get_transportmode_by_id\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/transportmode",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"transportmode"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_transportmode_by_id",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"id\", 1);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"create_document\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/transportmode/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"transportmode",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{id_transportmode}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Document",
+			"item": [
+				{
+					"name": "create_document",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.collectionVariables.set(\"id_document\", jsonData.id);",
+									"",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"// console.log(\"REQUEST FORM DATA: \" + JSON.stringify(pm.request.body.formdata.toJSON()));",
+									"",
+									"postman.setNextRequest(\"get_document\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "document",
+									"contentType": "image",
+									"type": "file",
+									"src": "dora.jpg"
+								},
+								{
+									"key": "id_element",
+									"value": "{{id_element}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/document",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"document"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_document",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"get_document_by_id\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/document",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"document"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_document_by_id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"update_document\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/document/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"document",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								},
+								{
+									"key": "id",
+									"value": "{{id_document}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_document",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"create_photo-s\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\" : {{id_document}},\r\n    \"description\" : \"{{description}}\",\r\n    \"point\":{\r\n        \"type\":\"{{type}}\",\r\n          \"coordinates\": [\r\n      {{lng}},\r\n      {{lat}}\r\n    ]\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/document/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"document",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								},
+								{
+									"key": "id",
+									"value": "{{id_document}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_document",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"delete_trip\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/document/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"document",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								},
+								{
+									"key": "id",
+									"value": "{{id_document}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Photo",
+			"item": [
+				{
+					"name": "create_photo-s",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"// Setting id_photo to the first photo saved",
+									"pm.collectionVariables.set(\"id_photo\", jsonData[0].id);",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"get_photo\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "images",
+									"type": "file",
+									"src": "voyage1.png"
+								},
+								{
+									"key": "images",
+									"contentType": "image",
+									"type": "file",
+									"src": "voyage2.png"
+								},
+								{
+									"key": "is_in_album",
+									"value": "true",
+									"contentType": "",
+									"type": "default"
+								},
+								{
+									"key": "is_public",
+									"value": "true",
+									"type": "default"
+								},
+								{
+									"key": "id_element",
+									"value": "{{id_element}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/photo",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"photo"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_photo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);\r",
+									"\r",
+									"postman.setNextRequest(\"update_photo\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/photo",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"photo"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_photo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);\r",
+									"\r",
+									"pm.collectionVariables.get(\"deleteOn\") && postman.setNextRequest(\"delete_photo\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\" : {{id_photo}},\r\n    \"description\" : \"{{description}}\",\r\n    \"point\":{\r\n        \"type\":\"{{type}}\",\r\n          \"coordinates\": [\r\n      {{lng}},\r\n      {{lat}}\r\n    ]\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/photo/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"photo",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								},
+								{
+									"key": "id",
+									"value": "{{id_photo}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_photo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);\r",
+									"\r",
+									"postman.setNextRequest(\"delete_document\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/photo/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"photo",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								},
+								{
+									"key": "id",
+									"value": "{{id_photo}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Participant",
+			"item": [
+				{
+					"name": "create_participant",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"{{name}}\",\n    \"email\":\"{{email}}\",\n    \"hasRefused\":false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/participant",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"participant"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_participants",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/participant",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"participant"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_participant",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/travel/:idTravel/participant/:idParticipant",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"travel",
+								":idTravel",
+								"participant",
+								":idParticipant"
+							],
+							"variable": [
+								{
+									"key": "idTravel",
+									"value": "{{id_travel}}"
+								},
+								{
+									"key": "idParticipant",
+									"value": "{{id_participant}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Anonymous Traveler",
+			"item": [
+				{
+					"name": "_signup",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"let password = JSON.parse(pm.request.body.raw).password;",
+									"",
+									"pm.collectionVariables.set(\"id_traveler\", jsonData.id);",
+									"pm.collectionVariables.set(\"firstname\", jsonData.firstname);",
+									"pm.collectionVariables.set(\"lastname\", jsonData.lastname);",
+									"pm.collectionVariables.set(\"email\", jsonData.email);",
+									"pm.collectionVariables.set(\"password\", password);",
+									"",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"",
+									"postman.setNextRequest(\"signin\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstname\": \"{{firstname}}\",\n    \"lastname\": \"{{lastname}}\",\n    \"email\": \"{{email}}\",\n    \"password\": \"{{password}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/traveler/signup",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"traveler",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "_signin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"pm.collectionVariables.set(\"bearer_token\", jsonData.token);\r",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);\r",
+									"\r",
+									"postman.setNextRequest(\"error_whoami\");\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"unknown\",\n    \"password\": \"unknown\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/traveler/signin",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"traveler",
+								"signin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "_whoami",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);\r",
+									"\r",
+									"postman.setNextRequest(\"get_travelers\");\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token_wrong}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/traveler/whoami",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"traveler",
+								"whoami"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "_get_travelers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"get_traveler_by_id\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/traveler",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"traveler"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "_get_traveler_by_id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"update_traveler\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/traveler/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"traveler",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{id_traveler}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "_update_traveler",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(\"get_traveltag\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token_wrong}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstname\": \"{{firstname}}\",\n    \"lastname\": \"{{lastname}}\",\n    \"email\": \"{{email}}\",\n    \"password\": \"{{password}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/traveler/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"traveler",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{id_traveler}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "_delete_traveler",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.collectionVariables.get(\"printResponse\") && console.log(jsonData);",
+									"",
+									"postman.setNextRequest(null);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token_wrong}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/traveler/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"traveler",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{id_traveler}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "id_traveler",
+			"value": "1"
+		},
+		{
+			"key": "firstname",
+			"value": "johnny"
+		},
+		{
+			"key": "lastname",
+			"value": "cash"
+		},
+		{
+			"key": "email",
+			"value": "helloworld@test.com"
+		},
+		{
+			"key": "password",
+			"value": "helloworld"
+		},
+		{
+			"key": "bearer_token",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjUxOTUwMTIwLCJleHAiOjE2NTE5OTMzMjB9.N7w22MPRHQDcu3kP4WmqQ1p5u97uCB6L2yt91Gx_e8c"
+		},
+		{
+			"key": "id_travel",
+			"value": "1"
+		},
+		{
+			"key": "id",
+			"value": "1"
+		},
+		{
+			"key": "id_itinerary",
+			"value": "1"
+		},
+		{
+			"key": "id_element_itinerary",
+			"value": "1"
+		},
+		{
+			"key": "id_task_list",
+			"value": "1"
+		},
+		{
+			"key": "id_departure_step",
+			"value": "1"
+		},
+		{
+			"key": "id_arrival_step",
+			"value": "2"
+		},
+		{
+			"key": "id_diary",
+			"value": "1"
+		},
+		{
+			"key": "id_tasklisttag",
+			"value": "1"
+		},
+		{
+			"key": "id_tag",
+			"value": "1"
+		},
+		{
+			"key": "id_task",
+			"value": "1"
+		},
+		{
+			"key": "id_position",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "id_step",
+			"value": "1"
+		},
+		{
+			"key": "id_interestpoint",
+			"value": "1"
+		},
+		{
+			"key": "id_trip",
+			"value": "1"
+		},
+		{
+			"key": "id_element",
+			"value": "1"
+		},
+		{
+			"key": "id_document",
+			"value": "1"
+		},
+		{
+			"key": "id_photo",
+			"value": "1"
+		},
+		{
+			"key": "type",
+			"value": "Point"
+		},
+		{
+			"key": "lng",
+			"value": "7.7"
+		},
+		{
+			"key": "lat",
+			"value": "48.2"
+		},
+		{
+			"key": "content",
+			"value": "New content"
+		},
+		{
+			"key": "is_in_album",
+			"value": "true"
+		},
+		{
+			"key": "commentary",
+			"value": "this is a commentary"
+		},
+		{
+			"key": "is_finished",
+			"value": "false"
+		},
+		{
+			"key": "is_public",
+			"value": "false"
+		},
+		{
+			"key": "name",
+			"value": "Untitled"
+		},
+		{
+			"key": "dateonly",
+			"value": "2022-01-05"
+		},
+		{
+			"key": "is_terminated",
+			"value": "false"
+		},
+		{
+			"key": "order",
+			"value": "1"
+		},
+		{
+			"key": "duration",
+			"value": "1"
+		},
+		{
+			"key": "tagName",
+			"value": "Nature"
+		},
+		{
+			"key": "count",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "description",
+			"value": "descriptionwithnospace",
+			"type": "string"
+		},
+		{
+			"key": "id_transportmode",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "id_traveltag",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "review",
+			"value": "5",
+			"type": "string"
+		},
+		{
+			"key": "id_travelreview",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "travel_name",
+			"value": "Super voyage !",
+			"type": "string"
+		},
+		{
+			"key": "bearer_token_wrong",
+			"value": "jzajdozaj",
+			"type": "string"
+		},
+		{
+			"key": "updated_firstname",
+			"value": "test",
+			"type": "string"
+		},
+		{
+			"key": "new_password",
+			"value": "change",
+			"type": "string"
+		},
+		{
+			"key": "new_description",
+			"value": "updated!",
+			"type": "string"
+		},
+		{
+			"key": "id_participant",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "name",
+			"value": "Gaston",
+			"type": "string",
+			"disabled": true
+		},
+		{
+			"key": "printResponse",
+			"value": "false",
+			"type": "string"
+		},
+		{
+			"key": "deleteOn",
+			"value": "true",
+			"type": "string"
+		}
+	]
+}

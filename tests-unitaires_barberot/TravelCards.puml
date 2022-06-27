@@ -1,0 +1,27 @@
+@startuml
+
+object TravelCard{
+    listOfTravels
+    typeOfComponent => 
+    Public | Private | DealWithInvitation
+}
+
+object UnitTravelCard {
+    name of travel
+}
+
+object SubHeaderCard {
+    rating
+    duration
+    number of steps
+    buttons =>
+    Public | Private | DealWithInvitation
+
+
+
+}
+
+TravelCard <-- UnitTravelCard : 1:n
+UnitTravelCard <-- SubHeaderCard : 1:1
+
+@enduml
